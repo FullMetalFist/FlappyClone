@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>DBDC89F8-A852-4016-A0FB-97FA37CE3C89</string>
+	<key>IDESourceControlProjectName</key>
+	<string>FlappyClone</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C042680BE9828042353F87E80A68C054524D5A9C</key>
+		<string>github.com:FullMetalFist/FlappyClone.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>FlappyClone.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C042680BE9828042353F87E80A68C054524D5A9C</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:FullMetalFist/FlappyClone.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C042680BE9828042353F87E80A68C054524D5A9C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C042680BE9828042353F87E80A68C054524D5A9C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FlappyClone</string>
+		</dict>
+	</array>
+</dict>
+</plist>
