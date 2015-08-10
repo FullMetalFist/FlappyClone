@@ -35,13 +35,6 @@ static NSInteger const kVerticalPipeGap = 100;
 -(void)didMoveToView:(SKView *)view {
     /* Setup your scene here */
     
-    _score = 0;
-    _scoreLabelNode = [SKLabelNode labelNodeWithFontNamed:@"MarkerFelt-Wide"];
-    _scoreLabelNode.position = CGPointMake(CGRectGetMidX(self.frame), 3 * self.frame.size.height / 4);
-    _scoreLabelNode.zPosition = 100;
-    _scoreLabelNode.text = [NSString stringWithFormat:@"%ld", _score];
-    [self addChild:_scoreLabelNode];
-    
     _canRestart = NO;
     
     self.physicsWorld.gravity = CGVectorMake(0.0, -5.0);
@@ -54,48 +47,8 @@ static NSInteger const kVerticalPipeGap = 100;
     _moving = [SKNode node];
     [self addChild:_moving];
     
-    // Create ground
-    SKTexture *groundTexture = [SKTexture textureWithImageNamed:@"Ground"];
-    groundTexture.filteringMode = SKTextureFilteringNearest;
-    
-    SKAction *moveGroundSprite = [SKAction moveByX:-groundTexture.size.width * 2 y:0 duration:0.02 * groundTexture.size.width * 2];
-    SKAction *resetGroundSprite = [SKAction moveByX:groundTexture.size.width * 2 y:0 duration:0];
-    SKAction *moveGroundSpritesForever = [SKAction repeatActionForever:[SKAction sequence:@[moveGroundSprite, resetGroundSprite]]];
-    
-    for (int i = 0; i < 2 + self.frame.size.width / (groundTexture.size.width * 2); i++) {
-        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithTexture:groundTexture];
-        [sprite setScale:2.0];
-        sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2);
-        [sprite runAction:moveGroundSpritesForever];
-        [_moving addChild:sprite];
-    }
-    
-    // Create ground physics container
-    SKNode *dummy = [SKNode node];
-    dummy.position = CGPointMake(0, groundTexture.size.height);
-    dummy.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(self.frame.size.width, groundTexture.size.height * 2)];
-    dummy.physicsBody.dynamic = NO;
-    
-    dummy.physicsBody.categoryBitMask = worldCategory;
-    
-    [self addChild:dummy];
-    
-    // Create skyline
-    SKTexture *skylineTexture = [SKTexture textureWithImageNamed:@"Skyline"];
-    skylineTexture.filteringMode = SKTextureFilteringNearest;
-    
-    SKAction *moveSkylineSprite = [SKAction moveByX:-skylineTexture.size.width * 2 y:0 duration:0.1 * skylineTexture.size.width * 2];
-    SKAction *resetSkylineSprite = [SKAction moveByX:skylineTexture.size.width * 2 y:0 duration:0];
-    SKAction *moveSkylineSpriteForever = [SKAction repeatActionForever:[SKAction sequence:@[moveSkylineSprite, resetSkylineSprite]]];
-    
-    for (int i = 0; i < 2 + self.frame.size.width / (skylineTexture.size.width * 2); i++) {
-        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithTexture:skylineTexture];
-        [sprite setScale:2.0];
-        sprite.zPosition = -20;
-        sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2 + groundTexture.size.height * 2);
-        [sprite runAction:moveSkylineSpriteForever];
-        [_moving addChild:sprite];
-    }
+    _pipes = [SKNode node];
+    [_moving addChild:_pipes];
     
     // The Bird is the Word
     SKTexture *birdTexture1 = [SKTexture textureWithImageNamed:@"Bird1"];
@@ -122,6 +75,49 @@ static NSInteger const kVerticalPipeGap = 100;
     
     [self addChild:_bird];
     
+    // Create ground
+    SKTexture *groundTexture = [SKTexture textureWithImageNamed:@"Ground"];
+    groundTexture.filteringMode = SKTextureFilteringNearest;
+    
+    SKAction *moveGroundSprite = [SKAction moveByX:-groundTexture.size.width * 2 y:0 duration:0.02 * groundTexture.size.width * 2];
+    SKAction *resetGroundSprite = [SKAction moveByX:groundTexture.size.width * 2 y:0 duration:0];
+    SKAction *moveGroundSpritesForever = [SKAction repeatActionForever:[SKAction sequence:@[moveGroundSprite, resetGroundSprite]]];
+    
+    for (int i = 0; i < 2 + self.frame.size.width / (groundTexture.size.width * 2); i++) {
+        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithTexture:groundTexture];
+        [sprite setScale:2.0];
+        sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2);
+        [sprite runAction:moveGroundSpritesForever];
+        [_moving addChild:sprite];
+    }
+    
+    // Create skyline
+    SKTexture *skylineTexture = [SKTexture textureWithImageNamed:@"Skyline"];
+    skylineTexture.filteringMode = SKTextureFilteringNearest;
+    
+    SKAction *moveSkylineSprite = [SKAction moveByX:-skylineTexture.size.width * 2 y:0 duration:0.1 * skylineTexture.size.width * 2];
+    SKAction *resetSkylineSprite = [SKAction moveByX:skylineTexture.size.width * 2 y:0 duration:0];
+    SKAction *moveSkylineSpriteForever = [SKAction repeatActionForever:[SKAction sequence:@[moveSkylineSprite, resetSkylineSprite]]];
+    
+    for (int i = 0; i < 2 + self.frame.size.width / (skylineTexture.size.width * 2); i++) {
+        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithTexture:skylineTexture];
+        [sprite setScale:2.0];
+        sprite.zPosition = -20;
+        sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2 + groundTexture.size.height * 2);
+        [sprite runAction:moveSkylineSpriteForever];
+        [_moving addChild:sprite];
+    }
+    
+    // Create ground physics container
+    SKNode *dummy = [SKNode node];
+    dummy.position = CGPointMake(0, groundTexture.size.height);
+    dummy.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(self.frame.size.width, groundTexture.size.height * 2)];
+    dummy.physicsBody.dynamic = NO;
+    
+    dummy.physicsBody.categoryBitMask = worldCategory;
+    
+    [self addChild:dummy];
+    
     // Create Pipes
     _pipeTexture1 = [SKTexture textureWithImageNamed:@"Pipe1"];
     _pipeTexture1.filteringMode = SKTextureFilteringNearest;
@@ -138,6 +134,13 @@ static NSInteger const kVerticalPipeGap = 100;
     SKAction *spawnThenDelay = [SKAction sequence:@[spawn, delay]];
     SKAction *spawnThenDelayForever = [SKAction repeatActionForever:spawnThenDelay];
     [self runAction:spawnThenDelayForever];
+    
+    _score = 0;
+    _scoreLabelNode = [SKLabelNode labelNodeWithFontNamed:@"MarkerFelt-Wide"];
+    _scoreLabelNode.position = CGPointMake(CGRectGetMidX(self.frame), 3 * self.frame.size.height / 4);
+    _scoreLabelNode.zPosition = 100;
+    _scoreLabelNode.text = [NSString stringWithFormat:@"%ld", _score];
+    [self addChild:_scoreLabelNode];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
